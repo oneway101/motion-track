@@ -6,7 +6,7 @@ class Capture extends React.Component {
   static defaultProps = {
     videoWidth: 900,
     videoHeight: 700,
-    flipHorizontal: true,
+    flipHorizontal: false,
     algorithm: 'single-pose',
     showVideo: true,
     showSkeleton: true,

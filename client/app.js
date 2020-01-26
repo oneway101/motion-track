@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Capture from './components/capture'
+import Capture from './components/Capture'
 
 const App = () => {
   return (
