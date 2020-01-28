@@ -1,12 +1,13 @@
 import React, {Fragment} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
 import {drawKeypoints, drawSkeleton} from './utils'
+import Sketch from './sketch'
 
 class Capture extends React.Component {
   static defaultProps = {
-    videoWidth: 900,
+    videoWidth: 500,
     videoHeight: 700,
-    flipHorizontal: false,
+    flipHorizontal: true,
     algorithm: 'single-pose',
     showVideo: true,
     showSkeleton: true,
@@ -26,6 +27,9 @@ class Capture extends React.Component {
     super(props, Capture.defaultProps)
     this.net = null
     this.animationReqID = null
+    this.state = {
+      skeleton: {}
+    }
   }
 
   async start() {
@@ -138,8 +142,8 @@ class Capture extends React.Component {
       }
 
       poses.forEach(({score, keypoints}) => {
-        console.log(score, keypoints)
         if (score >= minPoseConfidence) {
+          this.getSkeletonPositions(keypoints)
           if (showPoints) {
             drawKeypoints(keypoints, minPartConfidence, canvasContext)
           }
@@ -153,17 +157,26 @@ class Capture extends React.Component {
     poseDetectionFrame()
   }
 
+  getSkeletonPositions(posenetData){
+    let newPosition = {}
+    posenetData.forEach(data => {
+      newPosition[data.part] = data.position
+    })
+    this.setState({ skeleton : newPosition })
+
+    //this.setState({ skeleton : posenetData[0].position})
+  }
+
   render() {
     return (
       <Fragment>
         <div id="main">
-          {/* <video id="video" playsInline ref={this.getVideo} />
-          <canvas id="output" ref={this.getCanvas} /> */}
           <video id="video" playsInline />
           <canvas id="canvas" />
-          <button onClick={() => this.start()}>Start</button>
-          <button onClick={() => this.stopStreamedVideo()}>Stop</button>
+          <Sketch skeleton={this.state.skeleton} videoWidth={this.state.videoWidth} videoHeight={this.state.videoHeight} />
         </div>
+        <button onClick={() => this.start()}>Start</button>
+        <button onClick={() => this.stopStreamedVideo()}>Stop</button>
       </Fragment>
     )
   }

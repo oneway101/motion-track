@@ -1,6 +1,7 @@
 import React from 'react'
 
-import Capture from './components/Capture'
+import Capture from './components/capture'
+import Sketch from './components/sketch'
 
 const App = () => {
   return (

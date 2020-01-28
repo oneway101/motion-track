@@ -20,6 +20,10 @@ form div {
   display: inline-block;
 }
 
+#main {
+  display: flex;
+}
+
 #video {
   transform: scaleX(-1);
   -moz-transform: scaleX(-1);
@@ -27,3 +31,7 @@ form div {
   -webkit-transform: scaleX(-1);
   display: none !important;
 }
+
+/* #canvas {
+  display: none !important;
+} */
